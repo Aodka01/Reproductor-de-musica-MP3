@@ -30,6 +30,11 @@ avance = 10  # segundos de salto
 pygame.init()
 pygame.mixer.init()
 
+# Volumen inicual
+
+volume = 0.5
+pygame.mixer.music.set_volume(volume)
+
 # Cargar lista de canciones .mp3
 playlist = [f for f in os.listdir(music_folder) if f.lower().endswith(".mp3")]
 if not playlist:
@@ -99,10 +104,11 @@ play_song(current_index)
 print(Fore.LIGHTGREEN_EX,
       "Controles:\n"
       "[p] Pausar | [c] Continuar | [a] Avanzar 10s | [r] Retroceder 10s\n"
-      "[n] Siguiente | [b] Anterior | [x] Repetición On/Off | [ESC] Salir"
+      "[n] Siguiente | [b] Anterior | [x] Repetición On/Off | [+] Subir Volumen | [-] Bajar Volume | [ESC] Salir"
       + Fore.RESET)
 
 while True:
+
     # PAUSA
     if keyboard.is_pressed('p'):
         if not is_paused:
@@ -173,6 +179,21 @@ while True:
         print(Fore.RED + "👋 Cerrando reproductor..." + Fore.RESET)
         break
 
+    # Subir volumen 
+    elif keyboard.is_pressed('+'):
+        volume = min(1.0, volume + 0.05)
+        pygame.mixer.music.set_volume(volume)
+        print(Fore.GREEN + F"🔊 Volumen: {int(volume*100)}%" + Fore.RESET)
+        wait_key_release('+')
+
+    #  Bajar Volumen 
+
+    elif keyboard.is_pressed('-'):
+        volume = max(0.0, volume - 0.05)
+        pygame.mixer.music.set_volume(volume)
+        print(Fore.GREEN + f"🔊 Volumen: {int(volume*100)}%" + Fore.RESET)
+        wait_key_release('-')
+
     # Si la canción NO está ocupada (no reproduciendo) y NO estamos en pausa -> pasó a final
     if not pygame.mixer.music.get_busy() and not is_paused:
         # Pequeña espera extra para evitar false positives momentáneos
@@ -185,6 +206,8 @@ while True:
 
     # Mostrar barra de progreso (sin spam)
     print(Fore.LIGHTRED_EX,  "\r" + progress_bar(), end="")
+
+    
     
 
     time.sleep(0.18)
