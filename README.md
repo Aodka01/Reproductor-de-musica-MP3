@@ -8,6 +8,7 @@ Este proyecto es un reproductor de música por consola escrito en Python, capaz 
 ✔️ Reproducción de archivos .mp3
 ✔️ Control mediante teclado en tiempo real
 ✔️ Pausa y reanudación sin reiniciar la canción
+✔️ Control de volumen 
 ✔️ Barra de progreso dinámica
 ✔️ Avance y retroceso de 10 segundos
 ✔️ Modo repetición ON/OFF
